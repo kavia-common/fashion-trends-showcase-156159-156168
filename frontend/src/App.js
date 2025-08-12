@@ -1,47 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 
-// PUBLIC_INTERFACE
+// Pages
+import Home from './pages/Home';
+import Catalog from './pages/Catalog';
+import ProductDetail from './pages/ProductDetail';
+import Contact from './pages/Contact';
+import NotFound from './pages/NotFound';
+
+// Components
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+
+/**
+ * PUBLIC_INTERFACE
+ * App
+ * The main application component that sets up routes and the global layout (navigation and footer).
+ */
 function App() {
-  const [theme, setTheme] = useState('light');
-
-  // Effect to apply theme to document element
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
-
-  // PUBLIC_INTERFACE
-  const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
-  };
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <button 
-          className="theme-toggle" 
-          onClick={toggleTheme}
-          aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-        >
-          {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
-        </button>
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <p>
-          Current theme: <strong>{theme}</strong>
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app-root">
+      <Router>
+        <Navbar />
+        <main className="main-content" role="main">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/catalog" element={<Catalog />} />
+            <Route path="/product/:id" element={<ProductDetail />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </main>
+        <Footer />
+      </Router>
     </div>
   );
 }
